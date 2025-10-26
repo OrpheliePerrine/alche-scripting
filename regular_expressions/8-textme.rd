@@ -3,10 +3,13 @@
 
 input = ARGV[0]
 
-# Use regex to match the relevant fields
-matches = input.scan(/\[from:(.*?)\] \[to:(.*?)\] \[flags:(.*?)\]/)
+# Match [from:SOMETHING] [to:SOMETHING] [flags:SOMETHING]
+# The \s* allows for any number of spaces between sections
+pattern = /\[from:(.*?)\].*?\[to:(.*?)\].*?\[flags:(.*?)\]/
 
-# Print the extracted values separated by commas
-matches.each do |from, to, flags|
-  puts "#{from},#{to},#{flags}"
-end
+matches = input.match(pattern)
+
+if matches
+  puts "#{matches[1]},#{matches[2]},#{matches[3]}"
+  end
+
