@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
-# Extracts sender, receiver, and flags from TextMe log lines
+# Extract sender, receiver, and flags from TextMe log lines
 
-input = ARGV[0]
+log = ARGV[0]
 
-# Match [from:SOMETHING] [to:SOMETHING] [flags:SOMETHING]
-# The \s* allows for any number of spaces between sections
-pattern = /\[from:(.*?)\].*?\[to:(.*?)\].*?\[flags:(.*?)\]/
+# Use a single regex to capture the three required fields
+# \[from:(.*?)\]     → captures the sender (name or number)
+# \[to:(.*?)\]       → captures the receiver
+# \[flags:(.*?)\]    → captures the flags string
+pattern = /\[from:(?<from>.*?)\].*?\[to:(?<to>.*?)\].*?\[flags:(?<flags>.*?)\]/
 
-matches = input.match(pattern)
+match = log.match(pattern)
 
-if matches
-  puts "#{matches[1]},#{matches[2]},#{matches[3]}"
-  end
-
+# Only print if a match is found
+puts "#{match[:from]},#{match[:to]},#{match[:flags]}" if match
